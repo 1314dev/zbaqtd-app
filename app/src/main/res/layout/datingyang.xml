@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EEF4FF"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
+    android:paddingTop="60dp"
+    android:paddingBottom="40dp">
+
+    <TextView
+        android:id="@+id/tvTitle1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="欢迎来到"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        android:textColor="#0B57D0"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTitle2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="长辈安全通道"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:textColor="#0B57D0"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTip"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="请选择身份"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:textColor="#FBBC04"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btnZinv"
+        android:layout_width="0dp"
+        android:layout_height="88dp"
+        android:layout_marginTop="36dp"
+        android:text="子女端"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/zinvyang"
+        android:stateListAnimator="@null"
+        app:layout_constraintTop_toBottomOf="@id/tvTip"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btnLaoren"
+        android:layout_width="0dp"
+        android:layout_height="88dp"
+        android:layout_marginTop="20dp"
+        android:text="老人端"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/laorenyang"
+        android:stateListAnimator="@null"
+        app:layout_constraintTop_toBottomOf="@id/btnZinv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btnJianyi"
+        android:layout_width="0dp"
+        android:layout_height="88dp"
+        android:layout_marginTop="20dp"
+        android:text="简易端"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/jianyiyang"
+        android:stateListAnimator="@null"
+        app:layout_constraintTop_toBottomOf="@id/btnLaoren"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
