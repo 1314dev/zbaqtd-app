@@ -1,0 +1,73 @@
+name: Build APK
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install build tools
+        run: sdkmanager "platforms;android-28" "build-tools;28.0.3"
+
+      - name: Build APK
+        run: |
+          set -e
+          SDK=$ANDROID_SDK_ROOT
+          BT=$SDK/build-tools/28.0.3
+          PLATFORM=$SDK/platforms/android-28/android.jar
+          M=$GITHUB_WORKSPACE/app/src/main
+          OUT=$GITHUB_WORKSPACE/out
+          rm -rf $OUT && mkdir -p $OUT/gen $OUT/obj $OUT/dex
+
+          echo "--- sources ---"
+          find $M/java -name '*.java' | sort
+
+          echo "--- aapt2 link ---"
+          $BT/aapt2 link -o $OUT/base.apk -I $PLATFORM \
+            --manifest $M/AndroidManifest.xml \
+            --java $OUT/gen \
+            --min-sdk-version 21 --target-sdk-version 28 \
+            $( [ -d $M/res ] && echo "--dir $M/res" )
+
+          echo "--- javac ---"
+          find $M/java $OUT/gen -name '*.java' > $OUT/sources.txt
+          wc -l < $OUT/sources.txt
+          javac -source 8 -target 8 -encoding UTF-8 -nowarn \
+            -bootclasspath $PLATFORM -classpath $PLATFORM \
+            -d $OUT/obj @$OUT/sources.txt
+
+          echo "--- d8 ---"
+          $BT/d8 --min-api 21 --output $OUT/dex $(find $OUT/obj -name '*.class')
+          cp $OUT/base.apk $OUT/unsigned.apk
+          (cd $OUT && zip -q unsigned.apk classes.dex)
+
+          echo "--- align & sign ---"
+          $BT/zipalign -f 4 $OUT/unsigned.apk $OUT/aligned.apk
+          KEY=$OUT/debug.keystore
+          keytool -genkeypair -keystore $KEY -storepass android -keypass android \
+            -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 \
+            -dname "CN=Android Debug,O=Android,C=US" 2>/dev/null
+          $BT/apksigner sign --ks $KEY --ks-pass pass:android --key-pass pass:android \
+            --ks-key-alias androiddebugkey --out $OUT/app-release.apk $OUT/aligned.apk
+          $BT/apksigner verify --verbose $OUT/app-release.apk
+          ls -lh $OUT/app-release.apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: apk-zbaqtd
+          path: out/app-release.apk
