@@ -1,13 +1,13 @@
-apply plugin: 'com.android.application'
+apply plugin: "com.android.application"
 
 android {
-    namespace 'com.example.zbaqtd'
-    compileSdk 28
+    namespace "com.example.zbaqtd"
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.zbaqtd"
         minSdk 21
-        targetSdk 28
+        targetSdk 34
         versionCode 1
         versionName "1.0"
     }
@@ -15,19 +15,21 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
-    // 工程仅含 Java 源码，关闭 Kotlin/AIDL/RenderScript 等无关 task
-    kotlinOptions { jvmTarget = '1.8' }
+    buildFeatures {
+        buildConfig false
+        resValues true
+    }
 }
 
 dependencies {
-    // 不引入任何 AndroidX / appcompat 依赖，保持零外部依赖，离线可编
+    // 刻意保持零依赖：不引 appcompat / AndroidX 库，保证离线可编
 }
