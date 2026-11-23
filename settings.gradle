@@ -1,5 +1,3 @@
-rootProject.name = "zbaqtd"
-
 pluginManagement {
     repositories {
         google()
@@ -7,6 +5,8 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
+rootProject.name = "zbaqtd"
 
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
