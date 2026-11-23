@@ -1,0 +1,17 @@
+name: Probe
+on: workflow_dispatch
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "=== tools ==="
+          for t in java javac gradle sdkmanager aapt2 d8 zipalign apksigner keytool; do
+            printf "%s = %s\n" "$t" "$(command -v $t || echo MISSING)"
+          done
+          java -version 2>&1 | head -2
+          echo "=== sdk dirs ==="
+          ls /usr/lib/ | grep -i -E "android|jdk|java" || echo none
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT ANDROID_HOME=$ANDROID_HOME"
+          echo "=== apt ==="
+          apt-get --version 2>/dev/null | head -1 || echo "no apt"
